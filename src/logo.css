@@ -1,0 +1,7 @@
+.bms-brand{height:58px;min-width:310px;gap:10px}
+.bms-brand .logo-surface{height:58px;width:82px;max-width:none;background:#fff;display:grid;place-items:center;padding:6px 9px}
+.bms-brand .logo-surface img{display:block;max-width:100%;max-height:42px;object-fit:contain}
+.bms-brand .brand-context{display:grid;gap:1px;max-width:none;line-height:1.2}
+.bms-brand .brand-context b{font-size:15px;font-weight:650;letter-spacing:0}
+.bms-brand .brand-context small{font-size:10px;color:#c9dedc}
+@media(max-width:900px){.bms-brand .logo-surface{display:grid}.bms-brand .brand-context{display:grid}.bms-brand{min-width:82px}.bms-brand .brand-context{display:none}}

@@ -17,8 +17,10 @@ export function AppShell({ role, scenario, onRoleChange, onScenarioChange, child
 
   return <div className="bms-shell">
     <header className="bms-topbar">
-      <Link to="/dashboard" className="bms-brand"><b>NFI</b><span>Neonates Foundation of India</span></Link>
-      <div className="product-name">Beneficiary Management System</div>
+      <Link to="/dashboard" className="bms-brand" aria-label="NFI Beneficiary Management System home">
+        <span className="logo-surface"><img src="/assets/branding/nfi-logo.png" alt="NFI" /></span>
+        <span className="brand-context"><b>Beneficiary Management System</b><small>Neonates Foundation of India</small></span>
+      </Link>
       <div className="topbar-actions">
         <details className="demo-menu">
           <summary>Demo controls</summary>
