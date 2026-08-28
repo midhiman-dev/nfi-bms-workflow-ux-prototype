@@ -55,6 +55,7 @@ export function needsRoleAction(role: Role, c: Case): boolean {
 }
 
 export function canViewAllCases(role: Role): boolean {
+  // The Verifier is the prototype's oversight role. Other workflow roles see owned work only.
   return role === 'Verifier';
 }
 
@@ -81,9 +82,9 @@ export function actionForRole(role: Role, c: Case): { label: string; path: strin
     if (c.sponsor.state === 'revision requested') return { label: 'Revise Proposal', path: 'revision' };
     if (c.sponsor.state === 'ready' || c.sponsor.state === 'draft') return { label: 'Quantify', path: 'sponsor-quantification' };
   }
-  if (role === 'Medical Reviewer' && needsRoleAction(role, c)) return { label: 'Medical Review', path: 'medical-review' };
-  if (role === 'Social Reviewer' && needsRoleAction(role, c)) return { label: 'Social Review', path: 'social-review' };
-  if (role === 'Financial Reviewer' && needsRoleAction(role, c)) return { label: 'Financial Review', path: 'financial-review' };
+  if (role === 'Medical Reviewer' && needsRoleAction(role, c)) return { label: 'Open Medical Review', path: 'medical-review' };
+  if (role === 'Social Reviewer' && needsRoleAction(role, c)) return { label: 'Open Social Review', path: 'social-review' };
+  if (role === 'Financial Reviewer' && needsRoleAction(role, c)) return { label: 'Open Financial Review', path: 'financial-review' };
   if (role === 'Director' && c.director.state === 'pending') return { label: 'Review', path: 'director-approval' };
   if (role === 'Panel Member' && canSeeCase(role, c)) return { label: 'Recommendation', path: 'panel' };
   return { label: 'View', path: '' };

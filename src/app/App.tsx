@@ -46,7 +46,7 @@ function PrototypePage({ title, text }: { title: string; text: string }) {
 }
 
 function CasesPage({ cases, role }: { cases: Case[]; role: Role }) {
-  return <><div className="page-title"><div><h1>Cases</h1><p>Search, filter, and open cases relevant to your role.</p></div>{role === 'Hospital SPOC' && <Link className="primary button-link" to="/new-case">+ New Case</Link>}</div><MyWorkQueue cases={cases} role={role} /></>;
+  return <><div className="page-title"><div><h1>Cases</h1><p>Search, filter, and open cases relevant to your role.</p></div>{role === 'Hospital SPOC' && <Link className="primary button-link" to="/new-case">New Case</Link>}</div><MyWorkQueue cases={cases} role={role} /></>;
 }
 
 function Workspace({ cases, role, update }: { cases: Case[]; role: Role; update: (id: string, fn: (c: Case) => Case) => void }) {

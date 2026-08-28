@@ -54,14 +54,19 @@ export const scenarioCases = (scenario: Scenario): Case[] => {
   pendingDirector.panelRecommendation = 'Panel recommends sponsorship within the proposed amount.';
 
   const rejected = base('DEMO-NFI-008', 'Baby Tara Demo', 'CarePoint Hospital (Demo)');
+  rejected.broadStatus = 'Rejected';
   rejected.sponsor.state = 'pending director';
-  rejected.director = { state: 'pending', comments: '' };
+  rejected.director = { state: 'rejected', comments: 'The current request does not meet the synthetic demo eligibility criteria.', date: '27 Aug 2026' };
 
   const approved = base('DEMO-NFI-006', 'Baby Zoya Demo', 'Harmony Children’s Hospital (Demo)');
   approved.broadStatus = 'Approved';
   approved.beneficiaryNumber = 'DEMO-BEN-6201';
   approved.sponsor.state = 'pending director';
   approved.director = { state: 'approved', comments: 'Sponsorship approved for the proposed amount.', date: '28 Aug 2026' };
+
+  [normal, medical, social, financial, ready, revision, pendingDirector, rejected, approved].forEach((c, index) => {
+    c.beneficiaryNumber ||= `DEMO-BEN-${String(25001 + index)}`;
+  });
 
   const all = [normal, medical, social, financial, ready, revision, pendingDirector, rejected, approved];
   switch (scenario) {
