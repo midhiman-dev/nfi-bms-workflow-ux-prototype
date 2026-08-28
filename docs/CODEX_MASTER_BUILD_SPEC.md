@@ -6,6 +6,8 @@ Build a polished but lightweight clickable web prototype for the NFI BMS final w
 
 The prototype is for stakeholder validation and portfolio demonstration only. It must not connect to production systems or contain real beneficiary data.
 
+The prototype must look and behave like **the existing NFI BMS application with the workflow corrected and extended**. It must not look like a separate product, generic demo app, or standalone design concept.
+
 The source-of-truth documents in this repository are:
 
 1. `docs/PROTOTYPE_GUARDRAILS.md`
@@ -16,7 +18,46 @@ Read all three before changing code.
 
 If implementation convenience conflicts with those documents, the documents win.
 
-## 2. Non-Negotiable Workflow
+## 2. Mandatory Visual Continuity With Existing NFI BMS
+
+This is a non-negotiable correction requirement.
+
+Preserve the current NFI BMS product identity and interaction model as closely as practical:
+
+- dark teal top bar,
+- NFI brand presence,
+- `Beneficiary Management System` product identity,
+- `Neonates Foundation of India` subtitle/context,
+- left sidebar navigation,
+- familiar navigation labels such as Dashboard, Cases, New Case, Finance Inputs, Reports and Admin where relevant,
+- signed-in user / active-role treatment in the header,
+- current operational information density,
+- compact cards and table/list patterns,
+- existing button hierarchy,
+- status chip/badge language,
+- typography scale and spacing rhythm,
+- teal/green accent vocabulary,
+- familiar Case Detail workspace.
+
+The prototype should feel like a future release of NFI BMS, not a replacement application.
+
+### Explicitly prohibited presentation choices
+
+Do not:
+
+- place large `NFI BMS WORKFLOW UX PROTOTYPE` branding in the main production-like header,
+- make role/scenario selectors dominate the application header,
+- remove the left navigation,
+- rename the primary Cases screen to `My Work`,
+- make the initial stakeholder experience an empty role-specific screen,
+- replace the Cases experience with a generic demo-only queue card,
+- substantially reduce information density through oversized whitespace,
+- introduce a new visual brand/design system,
+- treat prototype controls as real product functionality.
+
+Prototype controls must remain visually secondary and clearly marked as demo-only.
+
+## 3. Non-Negotiable Workflow
 
 Implement exactly this conceptual flow:
 
@@ -40,7 +81,7 @@ Settlement & Closure may be shown as downstream guidance after Approved but is n
 
 Do not introduce new workflow stages or approval authorities.
 
-## 3. Non-Negotiable Role Rules
+## 4. Non-Negotiable Role Rules
 
 - Verifier performs Initial Verification.
 - Medical Reviewer acts after Verifier completion.
@@ -54,7 +95,7 @@ Do not introduce new workflow stages or approval authorities.
 - Revise returns the proposal to Verifier while keeping the case under review.
 - Panel/Committee is recommendation/history context only and must not finalize the case or authoritative amount.
 
-## 4. Technology
+## 5. Technology
 
 Use:
 
@@ -77,7 +118,7 @@ Avoid:
 
 The app must build as a static site suitable for Netlify.
 
-## 5. Repository Structure
+## 6. Repository Structure
 
 A suggested structure is:
 
@@ -93,12 +134,12 @@ src/
 
 Do not create one large monolithic component.
 
-## 6. Shared Components
+## 7. Shared Components
 
-Create reusable components approximately along these lines:
+Create/reuse components approximately along these lines:
 
 - `AppShell`
-- `PrototypeToolbar`
+- `PrototypeControls`
 - `CaseIdentityStrip`
 - `WorkflowProgress`
 - `StatusBadge`
@@ -111,13 +152,50 @@ Create reusable components approximately along these lines:
 - `SponsorQuantificationForm`
 - `DirectorDecisionPanel`
 - `ConfirmationDialog`
-- `MyWorkQueue`
+- `CasesTable` or equivalent role-aware Cases view
 
 Medical, Social and Financial screens should reuse `ReviewStageShell` rather than duplicate full layouts.
 
-## 7. Prototype Toolbar
+## 8. App Shell Requirements
 
-Include a visible prototype-only toolbar.
+The application shell must visually resemble the existing NFI BMS shell.
+
+Required layout:
+
+```text
+Topbar
+├── NFI branding
+├── Beneficiary Management System
+├── language control where represented
+└── signed-in user / active role
+
+Left Sidebar
+├── Dashboard
+├── Cases
+├── New Case
+├── Finance Inputs
+├── Reports
+└── Admin where relevant
+
+Main Workspace
+└── operational page content
+```
+
+The shell should be desktop-oriented and operational rather than marketing-oriented.
+
+Do not copy production secrets/data/assets that are unsafe for a public repository. Use recreated/safe branding treatment and synthetic content only.
+
+## 9. Prototype Controls
+
+Keep role/scenario controls because they are useful for stakeholder review, but make them **secondary and unmistakably prototype-only**.
+
+Preferred forms:
+
+- small `Demo controls` button,
+- collapsible drawer/panel,
+- subtle utility strip outside the primary product navigation.
+
+Do not present large always-visible selectors in the primary header.
 
 ### Role selector
 
@@ -144,13 +222,15 @@ Options:
 
 Changing scenario should reset mock state to a known representative point.
 
-This toolbar is intentionally not production UX.
+A subtle persistent label should indicate:
 
-## 8. Required Screens
+> Prototype — Synthetic demonstration data only
+
+## 10. Required Screens
 
 Implement all 12 blueprint surfaces:
 
-1. Case List / My Work
+1. Cases / Role-Aware Work Queue
 2. Case Detail + Workflow Progress
 3. Verifier — Initial Verification
 4. Medical Review
@@ -165,7 +245,59 @@ Implement all 12 blueprint surfaces:
 
 Follow `docs/UX_BLUEPRINT.md` for each screen's content hierarchy and actions.
 
-## 9. Workflow Progress
+## 11. Cases Page — Preserve Existing Interaction Model
+
+The primary page remains **Cases**.
+
+Do not make `My Work` the page title.
+
+Preserve the current application pattern:
+
+- Cases heading,
+- descriptive subtitle,
+- New Case action where applicable,
+- search,
+- broad status chips,
+- filters,
+- operational case table/list,
+- role-relevant workflow-stage chips/filters,
+- role-relevant action per row.
+
+An optional `My Work | All Cases` sub-view is acceptable, but it must remain inside the Cases experience.
+
+### Table/list information
+
+Retain established case information such as:
+
+- Case Ref,
+- Baby/Beneficiary,
+- Hospital,
+- broad Status,
+- Checklist/progress where useful,
+- Last Updated,
+- Actions.
+
+Add **Detailed Workflow Stage** rather than replacing the established operational fields.
+
+### Initial stakeholder view
+
+Do not show an empty state on first load.
+
+Seed multiple synthetic cases across useful workflow stages so reviewers can immediately understand the redesign.
+
+Representative rows should include cases such as:
+
+- Awaiting Initial Verification,
+- Awaiting Medical Review,
+- Financial Review Pending,
+- Ready for Sponsor Quantification,
+- Awaiting Director Approval,
+- Revision Requested by Director,
+- Approved.
+
+Role switching may filter/reorder the list and change actions, but should not make the product feel empty or broken.
+
+## 12. Workflow Progress
 
 This is one of the most important components.
 
@@ -190,13 +322,15 @@ Support visual states:
 
 Do not show raw enum names.
 
-## 10. Queue Behavior
+The component belongs primarily inside Case Detail and workflow stage pages, not as a standalone novelty dashboard.
 
-`My Work` must be role-aware.
+## 13. Role-Aware Work Behavior
+
+Role awareness should enhance the familiar Cases experience rather than replace it.
 
 ### Verifier
 
-Show categories for:
+Surface:
 
 - Awaiting Initial Verification
 - Ready for Sponsor Quantification
@@ -221,11 +355,28 @@ Show categories for:
 
 - Pending Sponsorship Approval
 
-Use mock readiness/stage data, not broad case status alone, to determine the visible task label.
+Use mock readiness/stage data, not broad case status alone, to determine the detailed task label and row action.
 
-## 11. Mock State Model
+## 14. Case Detail Is the Main Redesign Surface
 
-Create a small explicit TypeScript model for prototype state rather than scattering booleans across components.
+The strongest visible FGR enhancement should appear inside the familiar Case Detail workspace.
+
+Case Detail must clearly show:
+
+- case identity,
+- broad case status,
+- workflow progress,
+- current detailed stage,
+- current owner/assigned reviewer,
+- blocker or next step,
+- role-relevant primary action,
+- familiar navigation/tabs for supporting information.
+
+New Medical/Social/Financial/Sponsor/Director experiences should feel like parts of the existing case workspace, not separate mini-apps.
+
+## 15. Mock State Model
+
+Create/retain a small explicit TypeScript model for prototype state rather than scattering booleans across components.
 
 Recommended concepts:
 
@@ -272,7 +423,7 @@ Director states should support:
 
 Keep this model prototype-oriented; do not recreate the production backend schema.
 
-## 12. Synthetic Data
+## 16. Synthetic Data
 
 Use only obvious demo records.
 
@@ -280,11 +431,11 @@ Use examples from `docs/DEMO_JOURNEYS.md` or equivalent synthetic names.
 
 Never add actual NFI beneficiary information, Aadhaar numbers, phone numbers, production screenshots, URLs, credentials or documents.
 
-A persistent footer must say:
+A persistent subtle footer/indicator must say:
 
 > Prototype — Synthetic demonstration data only
 
-## 13. Interaction Requirements
+## 17. Interaction Requirements
 
 Prototype actions should update local state so the main journeys are genuinely clickable.
 
@@ -308,7 +459,7 @@ Confirmation dialogs are required for:
 - Director Reject,
 - Director Revise.
 
-## 14. Action Visibility
+## 18. Action Visibility
 
 Prefer hiding irrelevant actions for the current role.
 
@@ -317,36 +468,37 @@ Show a disabled action only when doing so helps explain a meaningful blocker.
 Examples:
 
 - Sponsor Quantification may be visibly disabled with blocker guidance while Financial Review is pending.
-- Director controls must not appear for Admin-like/other roles.
+- Director controls must not appear for other roles.
 - Verifier must never receive Final Approve controls.
 - Panel must never receive final sponsorship authority controls.
 
-## 15. Visual Direction
+## 19. Visual Direction
 
-Aim for a calm, modern enterprise/NGO operations interface.
+The visual target is **the current NFI BMS with the final workflow incorporated**.
 
-Priorities:
+Priorities, in order:
 
-- readability,
-- obvious hierarchy,
-- clear current task,
-- clear workflow progress,
-- accessible forms,
-- moderate card use,
-- restrained visual treatment,
-- desktop-first but responsive.
+1. recognizability as NFI BMS,
+2. continuity of shell/navigation,
+3. operational information density,
+4. clear workflow progress,
+5. clear current task,
+6. accessible forms,
+7. restrained visual treatment,
+8. desktop-first responsiveness.
 
 Do not spend time on:
 
+- a brand redesign,
 - elaborate animation,
 - glossy marketing layouts,
-- large dashboard charts,
-- a brand redesign,
-- mobile-native navigation.
+- large decorative dashboard charts,
+- mobile-native navigation,
+- unrelated dashboard redesign.
 
-The prototype should feel believable as a future version of an operational case-management application.
+Use whitespace deliberately, but do not make the prototype materially more sparse than the current application.
 
-## 16. Accessibility
+## 20. Accessibility
 
 Use semantic HTML and reasonable accessibility defaults:
 
@@ -357,7 +509,7 @@ Use semantic HTML and reasonable accessibility defaults:
 - accessible dialog behavior,
 - no meaning conveyed by color alone.
 
-## 17. Routing
+## 21. Routing
 
 Use understandable routes, for example:
 
@@ -378,7 +530,7 @@ Exact paths can vary, but browser refresh/deep links must work after Netlify dep
 
 Add the appropriate Netlify SPA redirect configuration.
 
-## 18. Netlify Readiness
+## 22. Netlify Readiness
 
 The repository should include everything required for a standard Netlify static deployment.
 
@@ -392,7 +544,7 @@ Add `netlify.toml` with SPA fallback if appropriate.
 
 Do not add environment variables because the prototype should not need any.
 
-## 19. Documentation After Build
+## 23. Documentation After Build
 
 Update README with:
 
@@ -404,14 +556,19 @@ Update README with:
 
 If you make an implementation decision not covered by this spec, record it briefly in `docs/IMPLEMENTATION_NOTES.md` rather than silently changing the workflow contract.
 
-## 20. Acceptance Criteria
+## 24. Acceptance Criteria
 
-Before declaring the prototype ready:
+Before declaring the corrected prototype ready:
 
 - `npm install` succeeds.
 - `npm run build` succeeds with no TypeScript errors.
 - all 12 surfaces are reachable.
 - all four journeys in `docs/DEMO_JOURNEYS.md` can be demonstrated.
+- the shell is immediately recognizable as NFI BMS.
+- the left navigation is present and familiar.
+- the Cases page remains Cases, not a replacement My Work page.
+- first load contains useful synthetic cases rather than an empty queue.
+- prototype controls are visually secondary and unmistakably demo-only.
 - role selector changes relevant work/action visibility.
 - scenario selector resets to deterministic mock states.
 - Social and Financial appear as parallel stages.
@@ -419,22 +576,25 @@ Before declaring the prototype ready:
 - Director revision loop works.
 - Panel cannot finalize.
 - final Approved and Rejected states are clear.
-- synthetic-data disclaimer is always visible.
+- synthetic-data disclaimer is always visible but unobtrusive.
 - no external API/network integration is required for normal operation.
 
-## 21. Working Method for Codex
+## 25. Correction Pass Working Method for Codex
 
-Before coding:
+This repository may already contain a first-pass prototype whose workflow/state logic is usable but whose visual presentation diverges from the existing NFI BMS.
 
-1. Read all docs.
-2. Summarize the intended architecture and planned files.
-3. Scaffold the application.
-4. Build shared components before duplicating screen markup.
-5. Implement mock state and demo scenarios.
-6. Implement screens and routing.
-7. Exercise the four demo journeys.
-8. Run the production build.
-9. Fix all build/type errors.
-10. Update documentation.
+For the correction pass:
+
+1. Read all source-of-truth docs again.
+2. Preserve working mock workflow/state logic where it already satisfies the contract.
+3. Refactor the presentation layer rather than rebuilding correct workflow behavior unnecessarily.
+4. Rebuild `AppShell` to match the existing NFI BMS shell and navigation.
+5. Convert the current `My Work` experience back into a familiar **Cases** page with role-aware enhancements.
+6. Move role/scenario controls into secondary prototype-only UI.
+7. Seed useful representative synthetic cases for first load.
+8. Make Case Detail + Workflow Progress the centerpiece of the redesign.
+9. Ensure all workflow pages inherit the same familiar case/application shell.
+10. Run all journeys and the production build.
+11. Fix all visual/interaction regressions that make the prototype feel like a different application.
 
 Do not ask for workflow clarification unless the repository documents genuinely conflict. Do not invent additional product scope.
