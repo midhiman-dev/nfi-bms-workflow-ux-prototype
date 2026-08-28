@@ -11,19 +11,77 @@ The prototype must answer four user questions on every workflow screen:
 3. What can I do?
 4. What happens next?
 
-## 2. Shared Page Anatomy
+## 2. Mandatory Visual & Interaction Continuity With Existing NFI BMS
 
-Use one common shell for workflow pages:
+This prototype is a **workflow redesign inside the existing NFI BMS product**, not a redesign of the product itself.
+
+A stakeholder familiar with the current NFI BMS should immediately recognize the prototype as the same application.
+
+The prototype must preserve, as closely as practical, the existing NFI BMS visual and interaction language:
+
+- dark teal top application bar,
+- NFI branding and Beneficiary Management System identity,
+- left navigation shell,
+- existing primary navigation labels such as Dashboard, Cases, New Case, Finance Inputs, Reports and Admin where appropriate,
+- signed-in user / active-role treatment in the header,
+- current content width and information density,
+- compact operational cards,
+- existing button hierarchy,
+- status badges/chips,
+- case-list/table treatment,
+- typography hierarchy,
+- spacing rhythm,
+- teal/green accent vocabulary,
+- restrained operational styling.
+
+The redesign must primarily affect workflow-dependent content inside the existing shell.
+
+### Explicitly avoid
+
+Do not make the prototype look like a separate product or design concept.
+
+Do not:
+
+- replace the main header with oversized `WORKFLOW UX PROTOTYPE` branding,
+- remove the familiar left navigation,
+- replace the normal Cases page with a generic demo-only dashboard,
+- make prototype controls look like production navigation or business functionality,
+- use large amounts of empty whitespace that materially reduce the current application's information density,
+- introduce a new visual brand system,
+- radically change established page names without a workflow reason,
+- make NFI reviewers learn a new application shell merely to review the workflow changes.
+
+### Prototype-only controls
+
+Role/scenario switching is allowed only as a stakeholder-demo aid.
+
+It must be visually separated from the production-like UI, for example through:
+
+- a small `Demo controls` button,
+- a collapsible prototype drawer,
+- or a subtle prototype-only utility strip.
+
+It must not dominate the top bar or appear to be a production feature.
+
+A subtle persistent indicator may state:
+
+> Prototype — Synthetic demonstration data only
+
+## 3. Shared Page Anatomy
+
+Use the existing NFI BMS application shell for workflow pages:
 
 ```text
-Application header / prototype controls
-Breadcrumb / Back to My Work
-Case identity strip
-Workflow progress
-Current-stage summary / blocker guidance
-Stage-specific content
-Primary and secondary actions
-Prototype disclaimer footer
+Existing NFI BMS topbar
+Existing left navigation
+Workspace / content area
+  Page heading / breadcrumb
+  Case identity strip where applicable
+  Workflow progress where applicable
+  Current-stage summary / blocker guidance
+  Stage-specific content
+  Primary and secondary actions
+Subtle prototype disclaimer
 ```
 
 ### Case identity strip
@@ -38,9 +96,9 @@ Show only essential identity:
 
 Do not repeat the full case form on every screen.
 
-## 3. Prototype Controls
+## 4. Prototype Controls
 
-The prototype may include controls that do not exist in production because they make stakeholder review faster.
+The prototype may include controls that do not exist in production because they make stakeholder review faster, but they must remain visually secondary to the real product shell.
 
 ### Viewing as
 
@@ -67,7 +125,9 @@ Allow selecting representative datasets/states such as:
 
 Changing role or scenario should alter visible queues, actions and current workflow state using local mock data only.
 
-## 4. Workflow Progress Component
+The preferred presentation is a small prototype-only control panel rather than always-visible large selectors in the production-like header.
+
+## 5. Workflow Progress Component
 
 Render this hierarchy clearly:
 
@@ -112,7 +172,7 @@ State the missing prerequisite directly, for example:
 
 > Sponsor Quantification becomes available after Social and Financial Review are both approved.
 
-## 5. Status Treatment
+## 6. Status Treatment
 
 Show both:
 
@@ -140,7 +200,7 @@ Examples:
 
 Detailed stage is the primary operational label for internal users.
 
-## 6. Shared Review Interaction Family
+## 7. Shared Review Interaction Family
 
 Medical, Social and Financial Review should feel like one consistent interaction family:
 
@@ -170,30 +230,58 @@ Supported outcomes:
 - Reject
 - Need More Information
 
-## 7. Screen 1 — Case List / My Work
+## 8. Screen 1 — Cases / Role-Aware Work Queue
 
 ### Purpose
 
-Immediately surface cases requiring the current role's attention.
+Preserve the existing **Cases** page while making workflow work easier to find.
+
+Do not rename the primary application page to `My Work`.
 
 ### Layout
 
-- title: My Work
-- role-specific count chips
-- search
-- role-relevant filter chips
-- case list/table
-- optional `My Work | All Cases` switch
+Retain the familiar Cases-page structure:
+
+- page title: **Cases**,
+- existing descriptive subtitle,
+- New Case action where applicable,
+- search,
+- status chips,
+- filters,
+- case table/list,
+- role-relevant workflow-stage filters/chips,
+- optional small `My Work | All Cases` view switch where useful.
 
 ### Row hierarchy
 
-- case reference
-- beneficiary
-- hospital
-- detailed workflow stage
-- assigned/current owner where useful
-- last updated/waiting since
-- Open action
+Preserve the existing operational case-list style and add detailed workflow stage without discarding established fields.
+
+Show approximately:
+
+- case reference,
+- beneficiary / baby name,
+- hospital,
+- broad status,
+- detailed workflow stage,
+- checklist/progress where useful,
+- last updated,
+- role-relevant action.
+
+### Synthetic representative records
+
+The initial stakeholder view should not be an empty state.
+
+Seed multiple obvious demo cases across representative stages, for example:
+
+- Awaiting Initial Verification
+- Awaiting Medical Review
+- Financial Review Pending
+- Ready for Sponsor Quantification
+- Awaiting Director Approval
+- Revision Requested by Director
+- Approved
+
+Role switching may filter/reorder these cases or change available actions, but the app should continue to feel like an operational Cases screen.
 
 ### Role examples
 
@@ -222,20 +310,22 @@ Director:
 
 - Pending Sponsorship Approval
 
-## 8. Screen 2 — Case Detail + Workflow Progress
+## 9. Screen 2 — Case Detail + Workflow Progress
 
 ### Purpose
 
-Act as the unified case workspace.
+Act as the unified case workspace and the principal location where the FGR workflow redesign becomes visible.
 
 ### Layout
 
-- case identity strip
-- workflow progress
-- current-stage card
-- key case summary
-- stage navigation
-- role-relevant primary-action shortcut
+Keep the familiar case-detail workspace and add:
+
+- case identity strip,
+- workflow progress,
+- current-stage card,
+- key case summary,
+- existing-style stage/tab navigation,
+- role-relevant primary-action shortcut.
 
 ### Current-stage card
 
@@ -256,11 +346,14 @@ Representative states:
 - Director revision returned
 - Approved
 
-## 9. Screen 3 — Verifier: Initial Verification
+The workflow progress component should be a prominent enhancement without making the page feel disconnected from the current NFI BMS case workspace.
+
+## 10. Screen 3 — Verifier: Initial Verification
 
 ### Layout
 
-- case identity + workflow progress
+- existing case shell + case identity
+- workflow progress
 - verification readiness summary
 - required document/verification checklist
 - comments/observations
@@ -278,11 +371,12 @@ Representative states:
 
 This screen must be visually distinct from Sponsor Quantification.
 
-## 10. Screen 4 — Medical Review
+## 11. Screen 4 — Medical Review
 
 ### Layout
 
-- case identity + workflow progress
+- existing case shell + case identity
+- workflow progress
 - review status/assignment
 - essential medical summary
 - relevant medical documents/context
@@ -302,9 +396,9 @@ This screen must be visually distinct from Sponsor Quantification.
 
 > Medical Review approved. Social and Financial Review can now proceed in parallel.
 
-## 11. Screen 5 — Social Review
+## 12. Screen 5 — Social Review
 
-Use the shared review shell.
+Use the shared review shell inside the familiar Case Detail workspace.
 
 ### Representative states
 
@@ -318,7 +412,7 @@ Use the shared review shell.
 
 > Social Review is complete. Sponsor Quantification will become available after Financial Review is also approved.
 
-## 12. Screen 6 — Financial Review
+## 13. Screen 6 — Financial Review
 
 Use the same shared review shell with financial-specific summary/context.
 
@@ -332,11 +426,12 @@ Use the same shared review shell with financial-specific summary/context.
 
 Never imply that Financial waits for Social or vice versa.
 
-## 13. Screen 7 — Verifier: Sponsor Amount Quantification
+## 14. Screen 7 — Verifier: Sponsor Amount Quantification
 
 ### Layout
 
-- case identity + workflow progress
+- existing case shell + case identity
+- workflow progress
 - prerequisite review outcome summary
 - relevant financial/supporting summary
 - proposed sponsorship amount
@@ -361,11 +456,11 @@ Never imply that Financial waits for Social or vice versa.
 
 Verifier must never see a Final Approve action.
 
-## 14. Screen 8 — Sponsor Quantification: Revision Requested
+## 15. Screen 8 — Sponsor Quantification: Revision Requested
 
 ### Layout
 
-- workflow progress showing Revision Requested
+- existing case shell + workflow progress showing Revision Requested
 - high-visibility Director Revision card
   - Director comments
   - suggested/revised amount if present
@@ -384,11 +479,11 @@ Verifier must never see a Final Approve action.
 
 > The Director has requested a revision. Update the sponsorship proposal and resubmit it for approval.
 
-## 15. Screen 9 — Director Sponsorship Approval
+## 16. Screen 9 — Director Sponsorship Approval
 
 ### Purpose
 
-A concise decision workspace, not a giant editable dossier.
+A concise decision workspace inside the familiar application shell, not a giant editable dossier.
 
 ### Layout
 
@@ -427,7 +522,7 @@ Revise:
 
 > Return this proposal to the Verifier for revision?
 
-## 16. Screen 10 — Panel / Committee Recommendation or History
+## 17. Screen 10 — Panel / Committee Recommendation or History
 
 ### Layout
 
@@ -450,7 +545,7 @@ Guidance:
 
 > Panel/Committee information is supporting recommendation context. Final sponsorship approval is completed by the Director.
 
-## 17. Screen 11 — Final Approved
+## 18. Screen 11 — Final Approved
 
 ### Layout
 
@@ -470,7 +565,7 @@ Guidance:
 
 No review-stage action remains available.
 
-## 18. Screen 12 — Final Rejected
+## 19. Screen 12 — Final Rejected
 
 ### Layout
 
@@ -485,7 +580,7 @@ No normal-path workflow action remains available.
 
 Do not imply Settlement is the next stage.
 
-## 19. Action Hierarchy
+## 20. Action Hierarchy
 
 Prefer one primary action per current task.
 
@@ -499,35 +594,49 @@ Examples:
 - Resubmit to Director
 - Approve on Director screen
 
-Secondary actions include Save Draft, Back to My Work and View Documents.
+Secondary actions include Save Draft, Back to Cases and View Documents.
 
 Final/destructive actions require confirmation.
 
-## 20. Visual Direction
+## 21. Visual Direction
 
-Keep the visual language calm, operational and accessible.
+The visual target is **the current NFI BMS application with workflow improvements**, not a new generic enterprise/NGO interface.
 
-Use:
+Priorities:
 
-- generous whitespace,
-- readable typography,
-- clear cards/sections,
-- restrained status emphasis,
-- obvious primary action,
-- desktop-first responsive layout,
-- accessible focus and keyboard behavior.
+1. visual continuity with the current NFI BMS,
+2. operational information density,
+3. recognizable shell/navigation,
+4. obvious current workflow stage,
+5. clear role-relevant actions,
+6. restrained status emphasis,
+7. accessible forms and keyboard behavior.
 
-Do not spend prototype effort on a new brand system, elaborate animation or decorative dashboard visuals.
+Use whitespace deliberately, but do not make the UI substantially more sparse than the current application.
 
-## 21. Prototype Acceptance
+Do not spend prototype effort on:
 
-The prototype is acceptable for NFI walkthrough when stakeholders can clearly understand:
+- a new brand system,
+- elaborate animation,
+- glossy marketing layouts,
+- large decorative charts,
+- mobile-native navigation,
+- broad dashboard redesign unrelated to the FGR workflow.
 
-- where each case is,
-- who acts next,
-- what each role can do,
-- why an action is blocked,
-- that Social and Financial happen in parallel,
-- that Verifier proposes but Director decides,
-- how Director revision returns to Verifier,
-- and what Approved/Rejected look like as terminal states.
+## 22. Prototype Acceptance
+
+The prototype is acceptable for NFI walkthrough when:
+
+- it is immediately recognizable as NFI BMS,
+- stakeholders do not have to learn a new shell/navigation model,
+- the Cases page remains familiar while exposing role-aware workflow stages,
+- Case Detail clearly shows the new workflow progress and current stage,
+- stakeholders can understand where each case is,
+- stakeholders can understand who acts next,
+- each role sees the correct actions,
+- blocker reasons are clear,
+- Social and Financial are visibly parallel,
+- Verifier proposes but Director decides,
+- Director revision clearly returns to Verifier,
+- Approved/Rejected are clear terminal states,
+- prototype-only controls do not appear to be production features.
