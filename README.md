@@ -1,5 +1,42 @@
 # NFI BMS Workflow UX Prototype
 
+A standalone React + TypeScript prototype for stakeholder walkthrough of the frozen NFI BMS sponsorship workflow. It uses only synthetic, in-memory demonstration data and has no backend, authentication, database, or external integrations.
+
+## Run locally
+
+```bash
+npm install
+npm run dev
+```
+
+Create a production build with `npm run build`.
+
+## Prototype controls
+
+The application header provides prototype-only selectors for the viewing role and deterministic demo scenario. The four required journeys can be demonstrated through Normal Approval, Financial Review Pending, Director Revision, and Director Rejection; further representative states are available for Medical Needs More Information and Approved Case.
+
+## Routes
+
+- `/cases` — role-aware My Work queue
+- `/cases/:id` — case detail and workflow progress
+- `/cases/:id/verification` — Verifier initial verification
+- `/cases/:id/medical-review`, `/social-review`, `/financial-review` — sibling review workspaces
+- `/cases/:id/sponsor-quantification` — Verifier proposal
+- `/cases/:id/revision` — Director-requested revision
+- `/cases/:id/director-approval` — Director final decision
+- `/cases/:id/panel` — recommendation/history only
+- `/cases/:id/approved`, `/rejected` — terminal states
+
+## Netlify deployment
+
+Netlify can use `npm run build` as the build command and `dist` as the publish directory. `netlify.toml` includes the SPA fallback for deep-link refreshes. No environment variables are required.
+
+## Known limitations
+
+This is intentionally a UX validation artifact, not a production system: state resets on browser refresh and the controls/model are restricted to the documented workflow scope.
+
+Prototype — Synthetic demonstration data only
+
 Interactive workflow UX prototype for the **Neonates Foundation India (NFI) Beneficiary Management System**.
 
 This repository exists to validate the final case-management workflow, role responsibilities, information hierarchy, screen behavior and user actions with stakeholders before production UI implementation.

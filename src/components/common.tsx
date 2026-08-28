@@ -1,0 +1,4 @@
+import type { ReactNode } from 'react';
+export function StatusBadge({children, tone='neutral'}:{children:ReactNode;tone?:string}) { return <span className={`badge ${tone}`}>{children}</span>; }
+export function Banner({children, type='info'}:{children:ReactNode;type?:'info'|'warning'|'success'|'danger'}) { return <div className={`banner ${type}`}>{children}</div>; }
+export function ConfirmationDialog({open, title, message, onCancel, onConfirm}:{open:boolean;title:string;message:string;onCancel:()=>void;onConfirm:()=>void}) { if(!open) return null; return <div className="modal-backdrop" role="presentation"><section className="modal" role="dialog" aria-modal="true" aria-labelledby="dialog-title"><h2 id="dialog-title">{title}</h2><p>{message}</p><div className="actions"><button className="secondary" onClick={onCancel}>Cancel</button><button className="primary" onClick={onConfirm}>Confirm</button></div></section></div>; }
