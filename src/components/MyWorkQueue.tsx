@@ -10,11 +10,11 @@ function generalTask(c: Case): string {
   if (c.sponsor.state === 'revision requested') return 'Revision Requested by Director';
   if (c.sponsor.state === 'pending director') return 'Awaiting Director Approval';
   if (c.sponsor.state === 'ready' || c.sponsor.state === 'draft') return 'Ready for Sponsor Quantification';
+  if (c.verification === 'pending') return 'Awaiting Initial Verification';
   if (c.medical.outcome === 'not assigned' || c.medical.outcome === 'need more information' || c.medical.outcome === 'in progress') return 'Awaiting Medical Review';
   if (c.social.outcome !== 'approved' && c.financial.outcome !== 'approved') return 'Social & Financial Review in Progress';
   if (c.social.outcome !== 'approved') return 'Awaiting Social Review';
   if (c.financial.outcome !== 'approved') return 'Awaiting Financial Review';
-  if (c.verification === 'pending') return 'Awaiting Initial Verification';
   return 'Under Review';
 }
 
@@ -37,7 +37,8 @@ export function MyWorkQueue({ cases, role }: { cases: Case[]; role: Role }) {
   }, [role]);
 
   const roleVisible = useMemo(() => cases.filter(c => canSeeCase(role, c)), [cases, role]);
-  const myWork = useMemo(() => roleVisible.filter(c => needsRoleAction(role, c)), [roleVisible, role]);
+  const actionable = useMemo(() => roleVisible.filter(c => needsRoleAction(role, c)), [roleVisible, role]);
+  const myWork = role === 'Hospital SPOC' ? roleVisible : actionable;
   const baseRows = view === 'all' && canViewAllCases(role) ? roleVisible : myWork;
 
   const stageOptions = useMemo(() => {
@@ -53,9 +54,11 @@ export function MyWorkQueue({ cases, role }: { cases: Case[]; role: Role }) {
     return matchesSearch && matchesStage;
   });
 
+  const countLabel = role === 'Hospital SPOC' ? `${roleVisible.length} case${roleVisible.length === 1 ? '' : 's'} for my hospital` : `${actionable.length} requiring my action`;
+
   return <section className="queue">
     <div className="case-tabs">
-      <button className={view === 'my' ? 'selected' : ''} onClick={() => setView('my')}>My Work <span>{myWork.length}</span></button>
+      <button className={view === 'my' ? 'selected' : ''} onClick={() => setView('my')}>{role === 'Hospital SPOC' ? 'My Hospital Cases' : 'My Work'} <span>{myWork.length}</span></button>
       {canViewAllCases(role) && <button className={view === 'all' ? 'selected' : ''} onClick={() => setView('all')}>All Cases <span>{roleVisible.length}</span></button>}
     </div>
 
@@ -63,7 +66,7 @@ export function MyWorkQueue({ cases, role }: { cases: Case[]; role: Role }) {
       <input aria-label="Search cases" value={search} onChange={e => setSearch(e.target.value)} placeholder="Search by case ref, beneficiary or hospital" />
       <div className="chips">
         <StatusBadge tone="current">{role}</StatusBadge>
-        <StatusBadge>{myWork.length} requiring my action</StatusBadge>
+        <StatusBadge>{countLabel}</StatusBadge>
       </div>
     </div>
 
@@ -73,7 +76,7 @@ export function MyWorkQueue({ cases, role }: { cases: Case[]; role: Role }) {
     </div>}
 
     {filtered.length === 0 ? <div className="empty">
-      <strong>No cases require action for {role}</strong>
+      <strong>{role === 'Hospital SPOC' ? 'No cases are available for this hospital in the selected demo scenario.' : `No cases require action for ${role}`}</strong>
       <p>{canViewAllCases(role) ? 'Switch to All Cases to review cases outside your current work queue.' : 'Choose another demo scenario to see a different role-specific work state.'}</p>
     </div> : <table>
       <thead><tr><th>Case Ref</th><th>Beneficiary / Baby Name</th><th>Hospital</th><th>Status</th><th>Detailed Workflow Stage</th><th>Checklist</th><th>Last Updated</th><th>Action</th></tr></thead>
