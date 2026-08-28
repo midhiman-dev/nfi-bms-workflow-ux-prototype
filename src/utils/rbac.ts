@@ -38,7 +38,7 @@ export function needsRoleAction(role: Role, c: Case): boolean {
   if (!canSeeCase(role, c)) return false;
   switch (role) {
     case 'Hospital SPOC':
-      return c.broadStatus === 'Submitted' && c.verification === 'pending';
+      return false;
     case 'Verifier':
       return c.verification === 'pending' || ['ready', 'draft', 'revision requested'].includes(c.sponsor.state);
     case 'Medical Reviewer':
@@ -59,9 +59,10 @@ export function canViewAllCases(role: Role): boolean {
 }
 
 export function taskLabelForRole(role: Role, c: Case): string | undefined {
+  if (role === 'Hospital SPOC' && canSeeCase(role, c)) return c.verification === 'pending' ? 'Submitted — Awaiting Verification' : c.broadStatus;
   if (!needsRoleAction(role, c)) return undefined;
   switch (role) {
-    case 'Hospital SPOC': return 'Submitted — Awaiting Verification';
+    case 'Hospital SPOC': return undefined;
     case 'Verifier':
       if (c.verification === 'pending') return 'Awaiting Initial Verification';
       if (c.sponsor.state === 'revision requested') return 'Revision Requested by Director';
@@ -90,7 +91,9 @@ export function actionForRole(role: Role, c: Case): { label: string; path: strin
 
 export function canOpenScreen(role: Role, c: Case, screen: WorkflowScreen): boolean {
   if (!canSeeCase(role, c)) return false;
-  if (screen === 'detail' || screen === 'approved' || screen === 'rejected') return true;
+  if (screen === 'detail') return true;
+  if (screen === 'approved') return c.director.state === 'approved' && c.broadStatus === 'Approved';
+  if (screen === 'rejected') return c.director.state === 'rejected' && c.broadStatus === 'Rejected';
   switch (screen) {
     case 'verification': return role === 'Verifier';
     case 'medical-review': return role === 'Medical Reviewer';
@@ -98,7 +101,7 @@ export function canOpenScreen(role: Role, c: Case, screen: WorkflowScreen): bool
     case 'financial-review': return role === 'Financial Reviewer';
     case 'sponsor-quantification': return role === 'Verifier';
     case 'revision': return role === 'Verifier';
-    case 'director-approval': return role === 'Director';
+    case 'director-approval': return role === 'Director' && c.director.state === 'pending';
     case 'panel': return role === 'Panel Member';
     default: return false;
   }
